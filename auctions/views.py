@@ -119,8 +119,11 @@ def listing(request, listing_id, add=None, bid_valid=None):
             if bid.bid > max_bid:
                 max_bid = bid.bid
                 max_bidder = bid.user
+    
+    comments = list(Comment.objects.filter(listing=details))
     return render(request, "auctions/listing.html", {
-        "details": details, "flag": flag, "bid_valid":bid_valid, "status": status, "max_bidder": max_bidder
+        "details": details, "flag": flag, "bid_valid":bid_valid, "status": status, "max_bidder": max_bidder,
+        "comments": comments
     })
 
 @login_required(redirect_field_name=None, login_url="/login")
@@ -134,6 +137,7 @@ def watchlist(request, item_id=None):
         "data": data
     })    
 
+@login_required(redirect_field_name=None, login_url="/login")
 def bid(request, listing_id):
     bid = float(request.POST["bid"])
     details = Listing.objects.get(pk=listing_id)
@@ -146,8 +150,17 @@ def bid(request, listing_id):
         new_high_bidder.save()
     return listing(request, listing_id=listing_id, bid_valid=valid)
 
+@login_required(redirect_field_name=None, login_url="/login")
 def close(request, listing_id):
     item = Listing.objects.get(pk=listing_id)
     item.status = "D"
     item.save()
+    return listing(request, listing_id=listing_id)
+
+@login_required(redirect_field_name=None, login_url="/login")
+def addcomment(request, listing_id):
+    detail = request.POST["comment"]
+    item = Listing.objects.get(pk=listing_id)
+    comment = Comment(user=request.user, listing=item, comment=detail)
+    comment.save()
     return listing(request, listing_id=listing_id)

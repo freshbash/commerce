@@ -60,6 +60,12 @@
     </div>
     <div>
         {% for comment in comments %}
+            <div style="border-top: 1px solid black;">
+                <label>{{ comment.user.username }}</label>
+                <p>{{ comment.comment }}</p>
+            </div>
+        {% empty %}
+            <label>No comments</label>
         {% endfor %}
     </div>
 {% endblock %}
