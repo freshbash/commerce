@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Listing, Bid, Comment
+from .models import User, Listing, Bid, Comment, Watchlist
 
 
 def index(request):
@@ -77,7 +77,7 @@ def add(request):
         desc = request.POST["desc"]
         start = float(request.POST["start"])
         url = request.POST["url"]
-        cat = request.POST["cat"]
+        cat = request.POST["cat"].upper()
 
         listing = Listing(
             user = request.user,
@@ -94,20 +94,14 @@ def add(request):
         return render(request, "auctions/add.html")
 
 @login_required(redirect_field_name=None, login_url="/login")
-def listing(request, listing_id, add=None, bid_valid=None):
+def listing(request, listing_id, add=0, bid_valid=None):
     details = Listing.objects.get(pk=listing_id)
-    if add is not None:
-        item = dict()
-        item["id"] = details.id
-        item["title"] = details.title
-        item["url"] = details.image_url
-        item["price"] = details.current_price
-        request.session["watchlist"] += [item]
+    if add:
+        watchlist = Watchlist(user=request.user, listing=details)
+        watchlist.save()
     flag = False
-    for item in request.session["watchlist"]:
-        if item["id"] ==  details.id:
-            flag = True
-            break
+    if (Watchlist.objects.filter(user=request.user).filter(listing=details)):
+        flag = True
     status = False
     if details.status in ["A", "Active"]:
         status = True
@@ -127,15 +121,17 @@ def listing(request, listing_id, add=None, bid_valid=None):
     })
 
 @login_required(redirect_field_name=None, login_url="/login")
-def watchlist(request, item_id=None):
-    if item_id is not None:   
-        request.session['watchlist'] = [
-            item for item in request.session['watchlist'] if item['id'] != item_id
-            ]
-    data = request.session["watchlist"]
+def watchlist(request):
+    data = list(Watchlist.objects.filter(user=request.user))
     return render(request, "auctions/watchlist.html", {
         "data": data
-    })    
+    })
+
+def delete_from_watchlist(request, item_id):
+    if item_id is not None:
+        item = Listing.objects.get(pk=item_id)   
+        Watchlist.objects.filter(user=request.user).filter(listing=item).delete()
+    return HttpResponseRedirect(f"/watchlist/")
 
 @login_required(redirect_field_name=None, login_url="/login")
 def bid(request, listing_id):
@@ -148,14 +144,14 @@ def bid(request, listing_id):
         details.save()
         new_high_bidder = Bid(user=request.user, listing=details, bid=bid)
         new_high_bidder.save()
-    return listing(request, listing_id=listing_id, bid_valid=valid)
+    return HttpResponseRedirect(f"/listing/{listing_id}/{0}/{int(valid)}/")
 
 @login_required(redirect_field_name=None, login_url="/login")
 def close(request, listing_id):
     item = Listing.objects.get(pk=listing_id)
     item.status = "D"
     item.save()
-    return listing(request, listing_id=listing_id)
+    return HttpResponseRedirect(f"/listing/{listing_id}/")
 
 @login_required(redirect_field_name=None, login_url="/login")
 def addcomment(request, listing_id):
@@ -163,4 +159,18 @@ def addcomment(request, listing_id):
     item = Listing.objects.get(pk=listing_id)
     comment = Comment(user=request.user, listing=item, comment=detail)
     comment.save()
-    return listing(request, listing_id=listing_id)
+    return HttpResponseRedirect(f"/listing/{listing_id}/")
+
+@login_required(redirect_field_name=None, login_url="/login")
+def categories(request):
+    cat = [c for c in Listing.category.field.choices]
+    return render(request, "auctions/categories.html", {
+        "cat": cat
+    })
+
+@login_required(redirect_field_name=None, login_url="/login")
+def catlist(request, category):
+    listings = list(Listing.objects.filter(category=category).filter(status="A"))
+    return render(request, "auctions/catlist.html", {
+        "listings": listings, "category": category.capitalize()
+    })

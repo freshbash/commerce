@@ -12,16 +12,16 @@
             <li>
                 <div style="display: flex;">
                     <div>
-                        <img src="{{ item.image_url }}" alt="No image">
+                        <img src="{{ item.listing.image_url }}" alt="No image">
                     </div>
                     <div>
-                        <a href="{% url 'listing' item.id %}"><h4>{{ item.title }}</h4></a>
+                        <a href="{% url 'listing' item.listing.id %}"><h4>{{ item.listing.title }}</h4></a>
                     </div>
                     <div>
-                        Current Price: {{ item.price }}
+                        Current Price: {{ item.listing.current_price }}
                     </div>
                     <div>
-                        <a href="{% url 'watchlist_del' item.id %}">Delete</a>
+                        <a href="{% url 'watchlist_del' item.listing.id %}">Delete</a>
                     </div>
                 </div>
                 <div style="border-bottom: 1px solid black;"></div>

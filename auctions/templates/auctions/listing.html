@@ -7,7 +7,7 @@
 {% block body %}
     <h2>{{ details.title }}</h2>
     {% if not flag %}
-        <a href="{% url 'listingadd' details.id True %}">Add to watchlist</a>
+        <a href="{% url 'listingadd' details.id 1 %}">Add to watchlist</a>
     {% else %}
         <a href="{% url 'watchlist' %}">Go to watchlist</a>
     {% endif %}
