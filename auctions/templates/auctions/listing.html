@@ -1,0 +1,52 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    {{ listing }}
+{% endblock %}
+
+{% block body %}
+    <h2>{{ details.title }}</h2>
+    {% if not flag %}
+        <a href="{% url 'listingadd' details.id True %}">Add to watchlist</a>
+    {% else %}
+        <a href="{% url 'watchlist' %}">Go to watchlist</a>
+    {% endif %}
+    <img src="{{ details.image_url }}">
+    <p>{{ details.description }}</p>
+    <label>Starting Bid: {{ details.starting_bid }}</label>
+    <p>Current Price: {{ details.current_price }}</p>
+    {% if status %}
+        <form action="{% url 'bid' details.id %}" method="post">
+            {% csrf_token %}
+            <input type="number" step="0.01" name="bid">
+            <input type="submit" value="Place Bid">
+        </form>
+    {% else %}
+        {% if user.id == max_bidder.id}
+            <label>You have won this auction.</label>
+        {% else %}
+            <label>This auction was won by {{ max_bidder.username }}</label>
+        {% endif %}
+    {% endif %}
+    {% if user.id == details.user.id %}
+        <a href="{% url 'close' details.id">Close bidding</a>
+    {% endif %}
+    {% if bid_valid != None %}
+        {% if not bid_valid %}
+            <p>Bid must be higher than the starting price and current highest bid</p>
+        {% else %}
+            <p>Your bid is submitted</p>
+        {% endif %}
+    {% endif %}
+    <div style="border-bottom: 1px solid black; margin-top: 20px;"></div>
+    <h4>Details</h4>
+    <ul>
+        <li>Posted by: {{ details.user.username }}</li>
+        <li>{% if details.category is None %}
+                Category: No category listed.
+            {% else %}
+                Category: {{ details.category }}
+            {% endif %}
+        </li>
+    </ul>
+{% endblock %}
