@@ -31,7 +31,7 @@ class Listing(models.Model):
         )
 
     def __str__(self):
-        return f"User: {self.user}, Product: {self.title}, Current Price: {self.starting_bid}"
+        return f"User: {self.user}, Product: {self.title}, Current Price: {self.current_price}"
 
 class Bid(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bids")

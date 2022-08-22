@@ -96,7 +96,7 @@ def add(request):
 @login_required(redirect_field_name=None, login_url="/login")
 def listing(request, listing_id, add=None, bid_valid=None):
     details = Listing.objects.get(pk=listing_id)
-    if add:
+    if add is not None:
         item = dict()
         item["id"] = details.id
         item["title"] = details.title
@@ -111,9 +111,9 @@ def listing(request, listing_id, add=None, bid_valid=None):
     status = False
     if details.status in ["A", "Active"]:
         status = True
+    max_bidder = None
     if status == False:
         bids_for_listing = list(Bid.objects.filter(listing=details))
-        max_bidder = None
         max_bid = 0
         for bid in bids_for_listing:
             if bid.bid > max_bid:
@@ -147,4 +147,7 @@ def bid(request, listing_id):
     return listing(request, listing_id=listing_id, bid_valid=valid)
 
 def close(request, listing_id):
-    pass
+    item = Listing.objects.get(pk=listing_id)
+    item.status = "D"
+    item.save()
+    return listing(request, listing_id=listing_id)

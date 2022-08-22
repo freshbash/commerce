@@ -4,24 +4,26 @@
     {% if user.is_authenticated %}
         <h2>Active Listings</h2>
         {% for listing in listings %}
-            <div style="display: flex;">
-                <div>
-                    <img src="{{ listing.image_url }}" alt="No image">
+            {% if listing.status == "A" %}
+                <div style="display: flex;">
+                    <div>
+                        <img src="{{ listing.image_url }}" alt="No image">
+                    </div>
+                    <div>
+                        <a href="{% url 'listing' listing.id %}"><h3>{{ listing.title }}</h3></a>
+                    </div>
+                    <div>
+                        Description: {{ listing.description }}
+                    </div>
+                    <div>
+                        Current Price: {{ listing.current_price }}
+                    </div>
+                    <div>
+                        Posted by: {{ listing.user.username }}
+                    </div>
                 </div>
-                <div>
-                    <a href="{% url 'listing' listing.id %}"><h3>{{ listing.title }}</h3></a>
-                </div>
-                <div>
-                    Description: {{ listing.description }}
-                </div>
-                <div>
-                    Current Price: {{ listing.current_price }}
-                </div>
-                <div>
-                    Posted by: {{ listing.user.username }}
-                </div>
-            </div>
-            <div style="border-bottom: 1px solid black;"></div>
+                <div style="border-bottom: 1px solid black;"></div>
+            {% endif %}
         {% endfor %}
     {% endif %}
 {% endblock %}
