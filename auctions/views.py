@@ -1,3 +1,5 @@
+from cProfile import label
+from django import forms
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -13,7 +15,7 @@ def index(request):
         request.session["watchlist"] = []
     listings = list(Listing.objects.all())
     return render(request, "auctions/index.html", {
-        "listings": listings
+        "listings": listings, 
     })
 
 
@@ -70,6 +72,24 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+class CreateListingForm(forms.Form):
+    title = forms.CharField(label="Title")
+    desc = forms.CharField(label="Description")
+    start = forms.DecimalField(decimal_places=2, label="Enter Starting bid")
+    url = forms.URLField(label="Enter Image URL")
+
+    CATEGORY_CHOICES = [
+        ("ANTIQUES", "Antiques"),
+        ("AUTOMOBILES", "Automobiles"),
+        ("BOOKS", "Books/Textbooks",), 
+        ("ELECTRONICS", "Electronics",), 
+        ('FASHION', "Fashion",), 
+        ("TOYS", "Toys",), 
+        ("HOME", "Home/Kitchen",),
+        ]
+
+    category = forms.ChoiceField(choices=CATEGORY_CHOICES, label="Select Category")
+
 @login_required(redirect_field_name=None, login_url="/login")
 def add(request):
     if request.method == "POST":
@@ -81,17 +101,19 @@ def add(request):
 
         listing = Listing(
             user = request.user,
-            title=name,
+            title=name.capitalize(),
             description=desc,
             starting_bid=start,
             current_price=start,
             image_url=url, category=cat)
         listing.save()
 
-        return index(request)
+        return HttpResponseRedirect(reverse("index"))
 
     else:
-        return render(request, "auctions/add.html")
+        return render(request, "auctions/add.html", {
+            "form": CreateListingForm
+        })
 
 @login_required(redirect_field_name=None, login_url="/login")
 def listing(request, listing_id, add=0, bid_valid=None):

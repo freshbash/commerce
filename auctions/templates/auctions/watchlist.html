@@ -6,29 +6,44 @@
 
 {% block body %}
     {% if user.is_authenticated %}
-        <h2>Watchlist</h2>
-        <ol>
+        <div class="active-listings">
+            <div style="margin-bottom: 20px;">
+                <h2>Watchlist</h2>
+            </div>
             {% for item in data %}
-            <li>
-                <div style="display: flex;">
-                    <div>
-                        <img src="{{ item.listing.image_url }}" alt="No image">
+                <div class="item" style="display: flex;">
+                    <div class="image-div">
+                        {% if item.listing.image_url %}
+                            <a href="{% url 'listing' item.listing.id %}"><img class="item-image" src="{{ item.listing.image_url }}" alt="No image"></a>
+                        {% else %}
+                            <div class="no-image">No Image</div>
+                        {% endif %}
                     </div>
-                    <div>
-                        <a href="{% url 'listing' item.listing.id %}"><h4>{{ item.listing.title }}</h4></a>
-                    </div>
-                    <div>
-                        Current Price: {{ item.listing.current_price }}
-                    </div>
-                    <div>
-                        <a href="{% url 'watchlist_del' item.listing.id %}">Delete</a>
+                    <div style="width: 100%; display: flex; align-items: center; justify-content: space-between;">
+                        <div class="details">
+                            <div>
+                                <a class="title" href="{% url 'listing' item.listing.id %}"><h5>{{ item.listing.title }}</h5></a>
+                            </div>
+                            <div>
+                                <label class="listing-details">Description:&nbsp;</label>{{ item.listing.description }}
+                            </div>
+                            <div>
+                                <label class="listing-details">Current Price: &#36;&nbsp;</label>{{ item.listing.current_price }}
+                            </div>
+                            <div>
+                                <label class="listing-details">Posted by:&nbsp;</label>{{ item.user.username }}
+                            </div>
+                        </div>
+                        <div>
+                            <a href="{% url 'watchlist_del' item.listing.id %}">Delete</a>
+                        </div>                    
                     </div>
                 </div>
-                <div style="border-bottom: 1px solid black;"></div>
-            </li>
             {% empty %}
-            <h1>No items in watchlist</h1>
+                <div style="text-align: center;">
+                    <h3>No items in watchlist</h3>
+                </div>
             {% endfor %}
-        </ol>
+        </div>
     {% endif %}
 {% endblock %}

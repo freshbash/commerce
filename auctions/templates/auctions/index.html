@@ -1,27 +1,34 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Active Listings</h2>
-    {% for listing in listings %}
-        {% if listing.status == "A" %}
-            <div style="display: flex;">
-                <div>
-                    <img src="{{ listing.image_url }}" alt="No image">
+    <div class="active-listings">
+        <h2>Active Listings</h2>
+        {% for listing in listings %}
+            {% if listing.status == "A" %}
+                <div class="item" style="display: flex;">
+                    <div class="image-div">
+                        {% if listing.image_url %}
+                            <a href="{% url 'listing' listing.id %}"><img class="item-image" src="{{ listing.image_url }}" alt="No image"></a>
+                        {% else %}
+                            <div class="no-image">No Image</div>
+                        {% endif %}
+                    </div>
+                    <div class="details">
+                        <div>
+                            <a class="title" href="{% url 'listing' listing.id %}"><h5>{{ listing.title }}</h5></a>
+                        </div>
+                        <div>
+                            <label class="listing-details">Description:&nbsp;</label>{{ listing.description }}
+                        </div>
+                        <div>
+                            <label class="listing-details">Current Price: &#36;&nbsp;</label>{{ listing.current_price }}
+                        </div>
+                        <div>
+                            <label class="listing-details">Posted by:&nbsp;</label>{{ listing.user.username }}
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <a href="{% url 'listing' listing.id %}"><h3>{{ listing.title }}</h3></a>
-                </div>
-                <div>
-                    Description: {{ listing.description }}
-                </div>
-                <div>
-                    Current Price: {{ listing.current_price }}
-                </div>
-                <div>
-                    Posted by: {{ listing.user.username }}
-                </div>
-            </div>
-            <div style="border-bottom: 1px solid black;"></div>
-        {% endif %}
-    {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </div>  
 {% endblock %}

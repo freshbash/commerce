@@ -1,3 +1,135 @@
-body {
+/* body {
     padding: 10px;
+} */
+
+#head-layout{
+    background-color: turquoise;
+    color: white;
+}
+
+.nav-link{
+    color: white;
+    font-weight: bold;
+}
+
+.nav-link:hover{
+    color: white;
+    text-decoration: underline;
+}
+
+#user-status{
+    padding-left: 16px;
+    padding-top: 10px;
+}
+
+.active-listings{
+    margin: 20px 30px;
+}
+
+.item{
+    margin: 10px 0px;
+    border: 0.5px solid aliceblue;
+    border-radius: 10px;
+    padding: 10px 10px;
+
+}
+
+.item:hover{
+    background-color: aliceblue;
+}
+
+.item-image{
+    margin-top: 8px;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.image-div{
+    margin-top: 5px;
+    padding: 5px;
+    width: 17%;
+    max-height: 150px;
+}
+
+.details{
+    padding: 20px;
+    width: fit-content;
+}
+
+.listing-details{
+    font-weight: bold;
+    margin-top: 2px;
+}
+
+.no-image{
+    margin-top: 5px;
+    background-color: white;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    padding-top: 60px;
+}
+
+ul.cats{
+    list-style-type: circle;
+}
+
+.category-items{
+    font-size: larger;
+}
+
+.log{
+    padding: 0% 35%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+@media screen and (max-width: 440px){
+    div.form-group{
+        width: 114px;
+    }
+}
+
+.image-div-view{
+    height: fit-content;
+    text-align: center;
+}
+
+.item-image-view{
+    max-height: 600px;
+    max-width: 600px;
+    height: auto;
+    width: auto;
+}
+
+.input-style{
+    border-radius: 5px;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.input-style:hover{
+    box-shadow: 0px 0px 20px grey;
+}
+
+.btn-style{
+    height: 38px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    background-color: green;
+    color: white;
+}
+
+.btn-style:hover{
+    box-shadow: 0px 0px 20px lightgreen;
+    background-color: darkgreen;
+}
+
+.comment{
+    margin: 10px 0px;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 10px;
+    background-color: aliceblue;
 }

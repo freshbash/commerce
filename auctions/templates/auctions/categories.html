@@ -5,10 +5,12 @@
 {% endblock %}
 
 {% block body %}
-    <h3>Categories</h3>
-    <ul>
-        {% for c in cat %}
-            <li><a href="{% url 'catlist' c.0 %}">{{ c.1 }}</a></li>
-        {% endfor %}
-    </ul>
+    <div class="active-listings">
+        <h3>Categories</h3>
+        <ul class="cats">
+            {% for c in cat %}
+                <li><a class="category-items" href="{% url 'catlist' c.0 %}">{{ c.1 }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
