@@ -1,11 +1,13 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-
+#Store each individual user to the website
 class User(AbstractUser):
     first_name = models.CharField(max_length=64)
     last_name = models.CharField(max_length=64)
 
+"""Store all the listings created by the users. There is a one-to-many
+relationship between User and Listing"""
 class Listing(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="listings")
     title = models.CharField(max_length=64)
@@ -27,20 +29,22 @@ class Listing(models.Model):
     category = models.CharField(
         max_length=64,
         choices=CATEGORY_CHOICES,
-        default=""
+        default="Not Provided"
         )
 
     def __str__(self):
         return f"User: {self.user}, Product: {self.title}, Current Price: {self.current_price}"
 
+#Stores a bid made by a user on a listing
 class Bid(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bids")
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bids")
-    bid = models.IntegerField()
+    bid = models.FloatField()
 
     def __str__(self):
         return f"User: {self.user}, Listing: {self.listing}, Bid: {self.bid}"
 
+#Comments made on a particular listing
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listings")
@@ -49,6 +53,7 @@ class Comment(models.Model):
     def __str__(self):
         return f"User: {self.user}, Listing: {self.listing}, Comment: {self.comment}"
 
+#Stores the listings each user has watchlisted
 class Watchlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlistuser")
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="watchlistitem")

@@ -9,11 +9,13 @@ from django.contrib.auth.decorators import login_required
 
 from .models import User, Listing, Bid, Comment, Watchlist
 
-
+#Home page of the website. Displays all the listings. Most recent at the top
 def index(request):
     if "watchlist" not in request.session:
         request.session["watchlist"] = []
     listings = list(Listing.objects.all())
+    listings.reverse()
+    print(listings)
     return render(request, "auctions/index.html", {
         "listings": listings, 
     })
