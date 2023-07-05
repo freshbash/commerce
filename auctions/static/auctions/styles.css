@@ -1,6 +1,6 @@
-/* body {
-    padding: 10px;
-} */
+body {
+    color: black;
+} 
 
 #head-layout{
     background-color: turquoise;
@@ -22,52 +22,71 @@
     padding-top: 10px;
 }
 
-.active-listings{
+.root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: 20px 30px;
 }
 
-.item{
-    margin: 10px 0px;
-    border: 0.5px solid aliceblue;
-    border-radius: 10px;
-    padding: 10px 10px;
-
+.active-listings{
+    display: grid;    
+    grid-template-columns: 1fr;
+    width: 80%;
 }
 
-.item:hover{
-    background-color: aliceblue;
-}
-
-.item-image{
-    margin-top: 8px;
-    max-width: 100%;
-    max-height: 100%;
-}
-
-.image-div{
-    margin-top: 5px;
-    padding: 5px;
-    width: 17%;
-    max-height: 150px;
-}
-
-.details{
+.tile {
+    align-items: center;
+    background-color: rgb(236, 234, 234);
+    border-radius: 10px;    
+    display: flex;
+    flex-direction: column;
+    height: 1000px;
+    margin: 10px;
     padding: 20px;
-    width: fit-content;
 }
 
-.listing-details{
-    font-weight: bold;
-    margin-top: 2px;
+.tile:hover {
+    background-color: red;    
 }
 
-.no-image{
-    margin-top: 5px;
-    background-color: white;
-    text-align: center;
+.img-wrapper {
+    display: flex;
+    justify-content: center;
+    height: 60%;
+    width: 100%;
+}
+
+.img-span {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.tile-img {
     height: 100%;
     width: 100%;
-    padding-top: 60px;
+}
+
+.info-wrapper {
+    height: 40%;
+    width: 100%;
+}
+
+.title-wrapper, .price-wrapper, .user-wrapper {
+    align-items: center;    
+    display: flex;
+    font-size: 3rem;
+    height: 33%;
+}
+
+.text-link {
+    color: black;
+}
+
+.text-link:hover {
+    color: black;
+    text-decoration: none;
 }
 
 ul.cats{

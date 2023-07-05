@@ -15,7 +15,6 @@ def index(request):
         request.session["watchlist"] = []
     listings = list(Listing.objects.all())
     listings.reverse()
-    print(listings)
     return render(request, "auctions/index.html", {
         "listings": listings, 
     })
@@ -117,6 +116,7 @@ def add(request):
             "form": CreateListingForm
         })
 
+#To be checked. Optimizations possible.
 @login_required(redirect_field_name=None, login_url="/login")
 def listing(request, listing_id, add=0, bid_valid=None):
     details = Listing.objects.get(pk=listing_id)
