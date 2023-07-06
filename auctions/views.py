@@ -118,14 +118,16 @@ def add(request):
 
 #To be checked. Optimizations possible.
 @login_required(redirect_field_name=None, login_url="/login")
-def listing(request, listing_id, add=0, bid_valid=None):
+def listing(request, listing_id, bid_valid=None):
+    #Get the details of the listing from the db.
     details = Listing.objects.get(pk=listing_id)
-    if add:
-        watchlist = Watchlist(user=request.user, listing=details)
-        watchlist.save()
+
+    #Checks if the item is added to the watchlist by the user.
     flag = False
     if (Watchlist.objects.filter(user=request.user).filter(listing=details)):
         flag = True
+
+    #Checks whether the item is active for bidding.
     status = False
     if details.status in ["A", "Active"]:
         status = True
@@ -144,25 +146,40 @@ def listing(request, listing_id, add=0, bid_valid=None):
         "comments": comments
     })
 
+#Add an item to the watchlist or view the watchlist
 @login_required(redirect_field_name=None, login_url="/login")
 def watchlist(request):
+    #If the user adds an item to the watchlist
+    if (request.method == "POST"):
+        listing_id = request.POST["listing-id"]
+        listing_details = Listing(id=listing_id)
+        addItemToWatchlist = Watchlist(user=request.user, listing=listing_details)
+        addItemToWatchlist.save()
+        return HttpResponseRedirect(reverse("listing", kwargs={"listing_id": listing_id}))
+
+    #If the user wants to view the watchlist
     data = list(Watchlist.objects.filter(user=request.user))
+    data.reverse()
     return render(request, "auctions/watchlist.html", {
         "data": data
     })
 
+
+#Delete an item from the watchlist
 def delete_from_watchlist(request, item_id):
     if item_id is not None:
         item = Listing.objects.get(pk=item_id)   
         Watchlist.objects.filter(user=request.user).filter(listing=item).delete()
-    return HttpResponseRedirect(f"/watchlist/")
+    return HttpResponseRedirect(reverse("watchlist"))
 
+
+#Bid on an item
 @login_required(redirect_field_name=None, login_url="/login")
 def bid(request, listing_id):
     bid = float(request.POST["bid"])
     details = Listing.objects.get(pk=listing_id)
     valid = False
-    if bid >= details.starting_bid and bid > details.current_price:
+    if bid >= details.current_price:
         valid = True
         details.current_price = bid
         details.save()

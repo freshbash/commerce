@@ -12,9 +12,15 @@
         </div>
         <div style="margin: 25px 0px;">
             {% if not flag %}
-                <a href="{% url 'listingadd' details.id 1 %}">Add to watchlist</a>
+                <form action="/watchlist/" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="listing-id" value="{{ details.id }}">
+                    <input id="button" type="submit" value="Add to Watchlist">
+                </form>
             {% else %}
-                <a href="{% url 'watchlist' %}">Go to watchlist</a>
+                <form action="/watchlist" method="get">
+                    <input id="button" type="submit" value="Go to Watchlist">
+                </form>
             {% endif %}
         </div>
         <div style="margin: 0px 0px 25px 0px;">
