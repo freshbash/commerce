@@ -1,13 +1,13 @@
-from cProfile import label
-from django import forms
+# from cProfile import label
+#Import necessary dependencies
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-
 from .models import User, Listing, Comment, Watchlist
+
 
 #Home page of the website. Displays all the listings. Most recent at the top
 def index(request):
@@ -20,7 +20,10 @@ def index(request):
     })
 
 
+#Log the user in
 def login_view(request):
+
+    #Handle login
     if request.method == "POST":
 
         # Attempt to sign user in
@@ -40,13 +43,19 @@ def login_view(request):
         return render(request, "auctions/login.html")
 
 
+#Log the user out
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
 
+#Register a new  user
 def register(request):
+
+    #Handle new registration
     if request.method == "POST":
+
+        #Get the new user's details from the submitted form
         username = request.POST["username"]
         email = request.POST["email"]
         first = request.POST["first_name"]
@@ -73,48 +82,41 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
-class CreateListingForm(forms.Form):
-    title = forms.CharField(label="Title")
-    desc = forms.CharField(label="Description")
-    start = forms.DecimalField(decimal_places=2, label="Enter Starting bid")
-    url = forms.URLField(label="Enter Image URL")
 
-    CATEGORY_CHOICES = [
-        ("ANTIQUES", "Antiques"),
-        ("AUTOMOBILES", "Automobiles"),
-        ("BOOKS", "Books/Textbooks",), 
-        ("ELECTRONICS", "Electronics",), 
-        ('FASHION', "Fashion",), 
-        ("TOYS", "Toys",), 
-        ("HOME", "Home/Kitchen",),
-        ]
-
-    category = forms.ChoiceField(choices=CATEGORY_CHOICES, label="Select Category")
-
+#Add a listing
 @login_required(redirect_field_name=None, login_url="/login")
 def add(request):
+
+    #Handle form submission
     if request.method == "POST":
+
+        #Get the data received from the form
         name = request.POST["title"]
         desc = request.POST["desc"]
         start = float(request.POST["start"])
         url = request.POST["url"]
         cat = request.POST["cat"].upper()
 
+        #Create a listing instance
         listing = Listing(
             user = request.user,
             title=name.capitalize(),
             description=desc,
             starting_bid=start,
             current_price=start,
-            image_url=url, category=cat)
+            image_url=url, category=cat
+        )
+
+        #Store that instance to the DB
         listing.save()
 
+        #Redirect to the home page.
         return HttpResponseRedirect(reverse("index"))
 
     else:
-        return render(request, "auctions/add.html", {
-            "form": CreateListingForm
-        })
+
+        #Display the form to let the user add a listing
+        return render(request, "auctions/add.html")
 
 #To be checked. Optimizations possible.
 @login_required(redirect_field_name=None, login_url="/login")
@@ -220,17 +222,24 @@ def addcomment(request, listing_id):
     return HttpResponseRedirect(reverse("listing", kwargs={"listing_id" : listing_id}))
 
 
-#
+#Display all the categories
 @login_required(redirect_field_name=None, login_url="/login")
 def categories(request):
+    #List of 2-tuples where first item is what is stored in the DB and second item is visible to the user.
     cat = [c for c in Listing.category.field.choices]
+
     return render(request, "auctions/categories.html", {
         "cat": cat
     })
 
+
+#Get all listings that belong to a particular category
 @login_required(redirect_field_name=None, login_url="/login")
 def catlist(request, category):
-    listings = list(Listing.objects.filter(category=category).filter(status="A"))
+
+    #Get all the listings which belong to the input category and have active status
+    listings = list(Listing.objects.filter(category=category, status="A"))
+
     return render(request, "auctions/catlist.html", {
         "listings": listings, "category": category.capitalize()
     })
