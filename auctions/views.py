@@ -204,11 +204,20 @@ def close(request, listing_id):
 #Lets the visitor to a listing add a comment
 @login_required(redirect_field_name=None, login_url="/login")
 def addcomment(request, listing_id):
+    #Get the comment text
     detail = request.POST["comment"]
+
+    #Get the details of the concerned listing
     item = Listing.objects.get(pk=listing_id)
+
+    #Create a comment
     comment = Comment(user=request.user, listing=item, comment=detail)
+
+    #Save the comment to the DB.
     comment.save()
-    return HttpResponseRedirect(f"/listing/{listing_id}/")
+
+    #Redirect to the listing page.
+    return HttpResponseRedirect(reverse("listing", kwargs={"listing_id" : listing_id}))
 
 
 #

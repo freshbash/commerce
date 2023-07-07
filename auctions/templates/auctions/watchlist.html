@@ -1,4 +1,5 @@
 {% extends "auctions/layout.html" %}
+{% load static %}
 
 {% block title %}
     Watchlist
@@ -16,7 +17,7 @@
                         {% if item.listing.image_url %}
                             <a href="{% url 'listing' item.listing.id %}"><img class="item-image" src="{{ item.listing.image_url }}" alt="No image"></a>
                         {% else %}
-                            <div class="no-image">No Image</div>
+                            <div class="no-image"><img src="{% static 'auctions/no-image.png' %}"></div>
                         {% endif %}
                     </div>
                     <div style="width: 100%; display: flex; align-items: center; justify-content: space-between;">
