@@ -13,7 +13,7 @@
                 <h1>Auctions</h1>
                 <div>
                     {% if user.is_authenticated %}
-                        Hello <strong>{{ user.username }}</strong>!
+                        Hello <a href="{% url 'profile' user.username %}"><strong>{{ user.username }}</strong></a>!
                     {% else %}
                         Not signed in.
                     {% endif %}

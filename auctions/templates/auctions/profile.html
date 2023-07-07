@@ -1,0 +1,33 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Profile - {{ profile.username }}
+{% endblock %}
+
+{% block body %}
+    <div>
+        <h1>{{ profile.username }}</h1>
+    </div>
+    <div>
+        <h3>Name:&nbsp;{{ profile.first_name }}&nbsp;{{ profile.last_name }}</h3>
+    </div>
+    <br>
+    <div>
+        <form action="{% url 'profile' profile.username %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="view" value="listings">
+            <input type="submit" value="Show listings">
+        </form>
+        <form action="{% url 'profile' profile.username %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="view" value="auctions">
+            <input type="submit" value="Show Auctions">
+        </form>
+    </div>
+    {% if view %}
+        {% for item in view %}
+            <div>{{ item.title }}</div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

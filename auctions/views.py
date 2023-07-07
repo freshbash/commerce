@@ -243,3 +243,30 @@ def catlist(request, category):
     return render(request, "auctions/catlist.html", {
         "listings": listings, "category": category.capitalize()
     })
+
+
+#View the profile of a user
+@login_required(redirect_field_name=None, login_url="/login")
+def profile(request, username):
+
+    #Get the details for the username
+    user = User.objects.get(username=username)
+
+    #Handle post request
+    view = None
+    if request.method == "POST":
+        #Which view is the user asking for?
+        whichView = request.POST["view"]        
+        
+        if whichView == "listings":
+            #If whchView stores "listings", get all the user's listings
+            view = list(Listing.objects.filter(user=user))
+        else:
+            #If whichView stores "auctions", get all auctions where the user has won.
+            view = list(Listing.objects.filter(highest_bidder=user))
+    
+        print(view)
+
+    return render(request, "auctions/profile.html", {
+        "profile": user, "view": view
+    })
