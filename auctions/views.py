@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Listing, Bid, Comment, Watchlist
+from .models import User, Listing, Comment, Watchlist
 
 #Home page of the website. Displays all the listings. Most recent at the top
 def index(request):
@@ -118,7 +118,7 @@ def add(request):
 
 #To be checked. Optimizations possible.
 @login_required(redirect_field_name=None, login_url="/login")
-def listing(request, listing_id, bid_valid=None):
+def listing(request, listing_id):
     #Get the details of the listing from the db.
     details = Listing.objects.get(pk=listing_id)
 
@@ -131,18 +131,10 @@ def listing(request, listing_id, bid_valid=None):
     status = False
     if details.status in ["A", "Active"]:
         status = True
-    max_bidder = None
-    if status == False:
-        bids_for_listing = list(Bid.objects.filter(listing=details))
-        max_bid = 0
-        for bid in bids_for_listing:
-            if bid.bid > max_bid:
-                max_bid = bid.bid
-                max_bidder = bid.user
     
     comments = list(Comment.objects.filter(listing=details))
     return render(request, "auctions/listing.html", {
-        "details": details, "flag": flag, "bid_valid":bid_valid, "status": status, "max_bidder": max_bidder,
+        "details": details, "flag": flag, "status": status,
         "comments": comments
     })
 
@@ -176,17 +168,27 @@ def delete_from_watchlist(request, item_id):
 #Bid on an item
 @login_required(redirect_field_name=None, login_url="/login")
 def bid(request, listing_id):
+    #Get the bid value
     bid = float(request.POST["bid"])
-    details = Listing.objects.get(pk=listing_id)
-    valid = False
-    if bid >= details.current_price:
-        valid = True
-        details.current_price = bid
-        details.save()
-        new_high_bidder = Bid(user=request.user, listing=details, bid=bid)
-        new_high_bidder.save()
-    return HttpResponseRedirect(f"/listing/{listing_id}/{0}/{int(valid)}/")
+    
+    #Pull out the record of the concerned listing
+    details = Listing.objects.get(pk=listing_id) 
+    
+    #Set the current price of the listing to be the new highest bid   
+    details.current_price = bid
 
+    #Set the highest bidder and the bid amount
+    details.highest_bidder = request.user
+    details.bid = bid
+
+    #Save the changes
+    details.save()
+
+    #Redirect to the listing page
+    return HttpResponseRedirect(reverse("listing", kwargs={"listing_id": listing_id}))
+
+
+#Close the bidding on an item
 @login_required(redirect_field_name=None, login_url="/login")
 def close(request, listing_id):
     item = Listing.objects.get(pk=listing_id)

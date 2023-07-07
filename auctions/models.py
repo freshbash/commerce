@@ -13,7 +13,7 @@ class Listing(models.Model):
     title = models.CharField(max_length=64)
     description = models.CharField(max_length=1000)
     starting_bid = models.IntegerField()
-    current_price = models.IntegerField(default = 0)
+    current_price = models.IntegerField(default = starting_bid)
     image_url = models.URLField(default="No image provided")
     state = [("A", "Active"), ("D", "Deactive")]
     status = models.CharField(max_length=8, choices=state, default="A")
@@ -30,19 +30,11 @@ class Listing(models.Model):
         max_length=64,
         choices=CATEGORY_CHOICES,
         default="Not Provided"
-        )
+    )
+    highest_bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bids", null=True)
 
     def __str__(self):
-        return f"User: {self.user}, Product: {self.title}, Current Price: {self.current_price}"
-
-#Stores a bid made by a user on a listing
-class Bid(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bids")
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bids")
-    bid = models.FloatField()
-
-    def __str__(self):
-        return f"User: {self.user}, Listing: {self.listing}, Bid: {self.bid}"
+        return f"User: {self.user}, Product: {self.title}, Current Price: {self.current_price}, Highest Bidder: {self.highest_bidder}"
 
 #Comments made on a particular listing
 class Comment(models.Model):
