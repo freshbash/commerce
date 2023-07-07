@@ -6,6 +6,7 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=64)
     last_name = models.CharField(max_length=64)
 
+
 """Store all the listings created by the users. There is a one-to-many
 relationship between User and Listing"""
 class Listing(models.Model):
@@ -36,14 +37,21 @@ class Listing(models.Model):
     def __str__(self):
         return f"User: {self.user}, Product: {self.title}, Current Price: {self.current_price}, Highest Bidder: {self.highest_bidder}"
 
+
 #Comments made on a particular listing
 class Comment(models.Model):
+    #User who made the comment
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
+
+    #Listing on which the comment was made
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listings")
+
+    #The content of the comment
     comment = models.CharField(max_length=1000)
 
     def __str__(self):
         return f"User: {self.user}, Listing: {self.listing}, Comment: {self.comment}"
+
 
 #Stores the listings each user has watchlisted
 class Watchlist(models.Model):

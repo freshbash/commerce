@@ -127,15 +127,12 @@ def listing(request, listing_id):
     if (Watchlist.objects.filter(user=request.user).filter(listing=details)):
         flag = True
 
-    #Checks whether the item is active for bidding.
-    status = False
-    if details.status in ["A", "Active"]:
-        status = True
-    
+    #Get the comments on the listing
     comments = list(Comment.objects.filter(listing=details))
+
+
     return render(request, "auctions/listing.html", {
-        "details": details, "flag": flag, "status": status,
-        "comments": comments
+        "details": details, "flag": flag, "comments": comments
     })
 
 #Add an item to the watchlist or view the watchlist
@@ -191,11 +188,20 @@ def bid(request, listing_id):
 #Close the bidding on an item
 @login_required(redirect_field_name=None, login_url="/login")
 def close(request, listing_id):
+    #Get the listing record
     item = Listing.objects.get(pk=listing_id)
-    item.status = "D"
-    item.save()
-    return HttpResponseRedirect(f"/listing/{listing_id}/")
 
+    #Set its status to deactivated
+    item.status = "D"
+
+    #Save the changes
+    item.save()
+
+    #Redirect to the listing page
+    return HttpResponseRedirect(reverse("listing", kwargs={"listing_id" : listing_id}))
+
+
+#Lets the visitor to a listing add a comment
 @login_required(redirect_field_name=None, login_url="/login")
 def addcomment(request, listing_id):
     detail = request.POST["comment"]
@@ -204,6 +210,8 @@ def addcomment(request, listing_id):
     comment.save()
     return HttpResponseRedirect(f"/listing/{listing_id}/")
 
+
+#
 @login_required(redirect_field_name=None, login_url="/login")
 def categories(request):
     cat = [c for c in Listing.category.field.choices]
