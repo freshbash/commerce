@@ -1,4 +1,5 @@
 {% extends "auctions/layout.html" %}
+{% load static %}
 
 {% block title %}
     {{ listing }}
@@ -8,7 +9,11 @@
     <div class="active-listings">
         <h2>{{ details.title }}</h2>
         <div class="image-div-view">
-            <img class="item-image-view" src="{{ details.image_url }}">
+            {% if details.image_url %}
+                <img class="item-image-view" src="{{ details.image_url }}">
+            {% else %}
+                <img class="item-image-view" src="{% static 'auctions/no-image.png' %}">
+            {% endif %}
         </div>
         <div style="margin: 25px 0px;">
             {% if not flag %}
