@@ -1,6 +1,5 @@
 body {
     color: black;
-    /* width: 100vw; */
 }
 
 ul.navbar-nav {
@@ -48,7 +47,7 @@ ul.navbar-nav {
 }
 
 .tile:hover {
-    background-color: rgb(109, 101, 101);
+    background-color: rgba(127, 255, 212, 0.3);
 }
 
 .img-wrapper {
@@ -86,6 +85,22 @@ ul.navbar-nav {
     color: black;
 }
 
+.create-listing-form {
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    justify-content: center;
+}
+
+.create-listing-form > div {
+    text-align: center;
+    margin-bottom: 0.3em;
+}
+
+.form-group, #create-listing {
+    margin: 0.4em 0;
+}
+
 ul.cats{
     list-style-type: circle;
 }
@@ -120,20 +135,6 @@ ul.cats{
 
 .input-style:hover{
     box-shadow: 0px 0px 20px grey;
-}
-
-.btn-style{
-    height: 38px;
-    border: none;
-    border-radius: 5px;
-    outline: none;
-    background-color: green;
-    color: white;
-}
-
-.btn-style:hover{
-    box-shadow: 0px 0px 20px lightgreen;
-    background-color: darkgreen;
 }
 
 .comment{

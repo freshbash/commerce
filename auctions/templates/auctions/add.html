@@ -6,9 +6,9 @@
 
 {% block body %}
 
-    <div class="active-listings">
-        <div style="text-align: center; margin-bottom: 20px;">
-            <h2>Create your own listing</h2>
+    <div class="create-listing-form">
+        <div>
+            <h2>Create a Product Listing</h2>
         </div>
 
         <form action="{% url 'addlisting' %}" method="post">
@@ -27,7 +27,7 @@
                     <input class="form-control" type="url" name="url" placeholder="Enter image url">
                 </div>
                 <div class="form-group">
-                    <select name="cat" class="form-control" required>
+                    <select class="form-control" id="dropdown" name="cat" required>
                         <option value="" selected>Select Category</option>
                         <option value="ANTIQUES">Antiques</option>
                         <option value="AUTOMOBILES">Automobiles</option>
@@ -38,7 +38,7 @@
                         <option value="HOME/KITCHEN">Home/Kitchen</option>
                     </select>
                 </div>
-                <input class="btn-style" style="padding: 0px 20px;" type="submit" value="Create Listing">
+                <input id="create-listing" class="btn btn-success" type="submit" value="Create Listing">
             </div>
         </form>
     </div>
