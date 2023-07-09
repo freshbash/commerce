@@ -1,21 +1,7 @@
 body {
     color: black;
+    /* width: 100vw; */
 }
-
-/* .nav-link{
-    color: white;
-    font-weight: bold;
-}
-
-.nav-link:hover{
-    color: white;
-    text-decoration: underline;
-} */
-
-/* #user-status{
-    padding-left: 16px;
-    padding-top: 10px;
-} */
 
 ul.navbar-nav {
     width: 100%;
@@ -42,67 +28,62 @@ ul.navbar-nav {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 20px 30px;
+    margin: 4% 0;
 }
 
 .active-listings{
     display: grid;    
-    grid-template-columns: 1fr;
-    width: 80%;
+    width: 90%;
 }
 
 .tile {
     align-items: center;
     background-color: rgb(236, 234, 234);
-    border-radius: 10px;    
+    border-radius: 0.625em;    
     display: flex;
     flex-direction: column;
-    height: 1000px;
-    margin: 10px;
-    padding: 20px;
+    margin: 2% 0;
+    padding: 4%;
+    width: 100%;
 }
 
 .tile:hover {
-    background-color: red;    
+    background-color: rgb(109, 101, 101);
 }
 
 .img-wrapper {
+    background-color: rgb(216, 214, 214);
+    border-radius: 0.3rem;
     display: flex;
-    justify-content: center;
     height: 60%;
+    justify-content: center;
+    overflow: hidden;
     width: 100%;
-}
-
-.img-span {
-    display: block;
-    width: 100%;
-    height: 100%;
 }
 
 .tile-img {
     height: 100%;
+    object-fit: contain;
     width: 100%;
 }
 
 .info-wrapper {
-    height: 40%;
+    margin-top: 2%;
     width: 100%;
 }
 
 .title-wrapper, .price-wrapper, .user-wrapper {
     align-items: center;    
     display: flex;
-    font-size: 3rem;
-    height: 33%;
 }
 
 .text-link {
     color: black;
+    text-decoration: none;
 }
 
 .text-link:hover {
     color: black;
-    text-decoration: none;
 }
 
 ul.cats{
@@ -163,6 +144,17 @@ ul.cats{
     background-color: aliceblue;
 }
 
+@media screen and (min-width: 1000px) {
+    .active-listings {
+        grid-auto-rows: minmax(20%, auto);
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .tile {
+        margin: 2%;
+        width: 96%;
+    }
+}
+
 @media screen and (max-width: 991px) {
     ul.navbar-nav {
         width: fit-content;
@@ -175,6 +167,17 @@ ul.cats{
     }
     #partition-1 {
         flex-direction: column;
+    }
+}
+
+@media screen and (min-width: 600px)and (max-width: 999px) {
+    .active-listings {
+        grid-auto-rows: minmax(10%, auto);
+        grid-template-columns: 1fr 1fr;
+    }
+    .tile {
+        margin: 2%;
+        width: 96%;
     }
 }
 

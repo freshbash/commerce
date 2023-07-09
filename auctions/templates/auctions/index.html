@@ -9,17 +9,15 @@
                 {% if listing.status == "A" %}                
                     <div class="tile">
                         <div class="img-wrapper">
-                            <span class="img-span">
-                                {% if listing.image_url %}
-                                    <a href="{% url 'listing' listing.id %}">
-                                        <img class="tile-img" src="{{ listing.image_url }}">
-                                    </a>
-                                {% else %}
-                                    <a href="{% url 'listing' listing.id %}">
-                                        <img class="tile-img" src="{% static 'auctions/no-image.png' %}">
-                                    </a>
-                                {% endif %}
-                            </span>                            
+                            {% if listing.image_url %}
+                                <a href="{% url 'listing' listing.id %}">
+                                    <img class="tile-img" src="{{ listing.image_url }}" loading="lazy">
+                                </a>
+                            {% else %}
+                                <a href="{% url 'listing' listing.id %}">
+                                    <img class="tile-img" src="{% static 'auctions/no-image.png' %}" loading="lazy">
+                                </a>
+                            {% endif %}
                         </div>
                         <div class="info-wrapper">                            
                             <div class="title-wrapper">
@@ -29,11 +27,12 @@
                             </div>
                             
                             <div class="price-wrapper">
+                                <b>Current Price:</b>&nbsp;
                                 <a class="text-link" href="{% url 'listing' listing.id %}">
                                     <b>&dollar;&nbsp;</b>{{ listing.current_price }}
                                 </a>
                             </div>                            
-                            <div class="user-wrapper">Posted by&nbsp;<b>{{ listing.user }}</b></div>
+                            <div class="user-wrapper">Posted by&nbsp;<b><a class="text-link" href="{% url 'profile' listing.user.username %}">{{ listing.user }}</a></b></div>
                         </div>
                     </div>
                 {% endif %}
