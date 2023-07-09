@@ -6,8 +6,10 @@
 {% endblock %}
 
 {% block body %}
-    <div class="active-listings">
-        <h2>{{ details.title }}</h2>
+    <div id="listing-page" class="container">
+        <div id="listing-title">
+            <h2>{{ details.title }}</h2>
+        </div>
         <div class="image-div-view">
             {% if details.image_url %}
                 <img class="item-image-view" src="{{ details.image_url }}">
@@ -20,11 +22,11 @@
                 <form action="/watchlist/" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="listing-id" value="{{ details.id }}">
-                    <input id="button" type="submit" value="Add to Watchlist">
+                    <input class="btn btn-primary" type="submit" value="Add to Watchlist">
                 </form>
             {% else %}
                 <form action="/watchlist" method="get">
-                    <input id="button" type="submit" value="Go to Watchlist">
+                    <input class="btn btn-primary" type="submit" value="Go to Watchlist">
                 </form>
             {% endif %}
         </div>
