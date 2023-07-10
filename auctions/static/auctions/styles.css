@@ -1,3 +1,11 @@
+::-webkit-scrollbar {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(208, 209, 209, 0.7);
+}
+
 body {
     color: black;
 }
@@ -106,6 +114,26 @@ ul.navbar-nav {
     width: 100%;
 }
 
+.listing-image-div{
+    display: flex;
+    height: 50vh;
+    justify-content: center;
+}
+
+.listing-image{
+    object-fit: contain;
+}
+
+.watchlist {
+    margin: 1.5em 0;
+}
+
+.info {
+    border: 0.01em solid lightgrey;
+    border-radius: 0.3em;
+    padding: 0.3em;
+}
+
 ul.cats{
     list-style-type: circle;
 }
@@ -118,18 +146,6 @@ ul.cats{
     padding: 0% 35%;
     text-align: center;
     margin-bottom: 20px;
-}
-
-.image-div-view{
-    height: fit-content;
-    text-align: center;
-}
-
-.item-image-view{
-    max-height: 600px;
-    max-width: 600px;
-    height: auto;
-    width: auto;
 }
 
 .input-style{
