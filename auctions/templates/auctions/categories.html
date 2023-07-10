@@ -5,12 +5,22 @@
 {% endblock %}
 
 {% block body %}
-    <div class="active-listings">
-        <h3>Categories</h3>
-        <ul class="cats">
+    <div class="container d-flex flex-column align-items-center my-5">
+        <div class="fs-2 fw-bold mb-4">Categories</div>
+        <div class="container text-center">
             {% for c in cat %}
-                <li><a class="category-items" href="{% url 'catlist' c.0 %}">{{ c.1 }}</a></li>
+                {% if forloop.first %}
+                    <div class="row">
+                {% endif %}
+                <div class="bg-info-subtle border border-info-subtle col-xs-12 col-sm-4"><a class="link-underline link-underline-opacity-0" href="{% url 'catlist' c.0 %}">{{ c.1 }}</a></div>
+                {% if forloop.counter|divisibleby:3 %}
+                    </div>
+                    <div class="row">
+                {% endif %}
+                {% if forloop.last %}
+                    </div>
+                {% endif %}
             {% endfor %}
-        </ul>
+        </div>
     </div>
 {% endblock %}
