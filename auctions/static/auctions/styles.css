@@ -169,7 +169,7 @@ ul.cats{
 
 @media screen and (min-width: 1000px) {
     .active-listings {
-        grid-auto-rows: minmax(20%, 84%);
+        grid-auto-rows: minmax(20%, auto);
         grid-template-columns: 1fr 1fr 1fr;
     }
     .tile {
@@ -195,7 +195,7 @@ ul.cats{
 
 @media screen and (min-width: 600px)and (max-width: 999px) {
     .active-listings {
-        grid-auto-rows: minmax(10%, 20%);
+        grid-auto-rows: minmax(10%, auto);
         grid-template-columns: 1fr 1fr;
     }
     .tile {
