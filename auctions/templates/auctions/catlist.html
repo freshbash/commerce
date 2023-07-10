@@ -1,16 +1,48 @@
 {% extends "auctions/layout.html" %}
+{% load static %}
 
 {% block title %}
     {{ category }}
 {% endblock %}
 
 {% block body %}
-    <div class="active-listings">
-        <h3>Active listings for {{ category }}</h3>
-        <ul class="cats">
+    <div class="align-items-center container d-flex flex-column my-5">
+        <h3 class="mb-4">Active listings for {{ category }}</h3>
+        <div class="active-listings">
             {% for c in listings %}
-                <li><a class="category-items" href="{% url 'listing' c.id %}">{{ c.title }}</a></li>
+                {% if c.status == "A" %}                
+                    <div class="tile">
+                        <div class="img-wrapper">
+                            {% if c.image_url %}
+                                <a href="{% url 'listing' c.id %}">
+                                    <img class="tile-img" src="{{ c.image_url }}" loading="lazy">
+                                </a>
+                            {% else %}
+                                <a href="{% url 'listing' c.id %}">
+                                    <img class="tile-img" src="{% static 'auctions/no-image.png' %}" loading="lazy">
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div class="info-wrapper">                            
+                            <div class="title-wrapper">
+                                <a class="text-link" href="{% url 'listing' c.id %}">
+                                    {{ c.title }}
+                                </a>
+                            </div>
+                            
+                            <div class="price-wrapper">
+                                <b>Current Price:</b>&nbsp;
+                                <a class="text-link" href="{% url 'listing' c.id %}">
+                                    <b>&dollar;&nbsp;</b>{{ c.current_price }}
+                                </a>
+                            </div>                            
+                            <div class="user-wrapper">Posted by&nbsp;<b><a class="text-link" href="{% url 'profile' c.user.username %}">{{ c.user }}</a></b></div>
+                        </div>
+                    </div>                    
+                {% endif %}
+            {% empty %}
+                <div class="fw-bold">Sorry! No active listings for {{ category }}</div>
             {% endfor %}
-        </ul>
+        </div>
     </div>
 {% endblock %}

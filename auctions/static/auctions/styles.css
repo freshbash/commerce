@@ -49,6 +49,7 @@ ul.navbar-nav {
     border-radius: 0.625em;    
     display: flex;
     flex-direction: column;
+    height: 96%;
     margin: 2% 0;
     padding: 4%;
     width: 100%;
@@ -59,7 +60,7 @@ ul.navbar-nav {
 }
 
 .img-wrapper {
-    background-color: rgb(216, 214, 214);
+    background-color: white;
     border-radius: 0.3rem;
     display: flex;
     height: 60%;
@@ -168,7 +169,7 @@ ul.cats{
 
 @media screen and (min-width: 1000px) {
     .active-listings {
-        grid-auto-rows: minmax(20%, auto);
+        grid-auto-rows: minmax(20%, 84%);
         grid-template-columns: 1fr 1fr 1fr;
     }
     .tile {
@@ -194,7 +195,7 @@ ul.cats{
 
 @media screen and (min-width: 600px)and (max-width: 999px) {
     .active-listings {
-        grid-auto-rows: minmax(10%, auto);
+        grid-auto-rows: minmax(10%, 20%);
         grid-template-columns: 1fr 1fr;
     }
     .tile {
