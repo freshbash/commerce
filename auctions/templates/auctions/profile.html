@@ -6,28 +6,56 @@
 {% endblock %}
 
 {% block body %}
-    <div>
-        <h1>{{ profile.username }}</h1>
+    <div class="container my-5">
+        <div class="fs-3 fw-bold">@{{ profile.username }}</div>
+        <div class="fs-3 fw-bold">{{ profile.first_name }}&nbsp;{{ profile.last_name }}</div>
+        <br>
+        <div class="d-flex">
+            <form action="{% url 'profile' profile.username %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="view" value="listings">
+                <input class="btn btn-success" type="submit" value="Show listings">
+            </form>
+            <form action="{% url 'profile' profile.username %}" class="ms-2" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="view" value="auctions">
+                <input class="btn btn-success" type="submit" value="Show Auctions">
+            </form>
+        </div>
+        <div class="border border-3 border-dark my-4"></div>
+        {% if view %}
+            <div class="active-listings">
+                {% for item in view %}
+                    <div class="tile">
+                        <div class="img-wrapper">
+                            {% if item.image_url %}
+                                <a href="{% url 'listing' item.id %}">
+                                    <img class="tile-img" src="{{ item.image_url }}" loading="lazy">
+                                </a>
+                            {% else %}
+                                <a href="{% url 'listing' item.id %}">
+                                    <img class="tile-img" src="{% static 'auctions/no-image.png' %}" loading="lazy">
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div class="info-wrapper">                            
+                            <div class="title-wrapper">
+                                <a class="text-link" href="{% url 'listing' item.id %}">
+                                    {{ item.title }}
+                                </a>
+                            </div>
+                            
+                            <div class="price-wrapper">
+                                <b>Current Price:</b>&nbsp;
+                                <a class="text-link" href="{% url 'listing' item.id %}">
+                                    <b>&dollar;&nbsp;</b>{{ item.current_price }}
+                                </a>
+                            </div>                            
+                            <div class="user-wrapper">Posted by&nbsp;<b><a class="text-link" href="{% url 'profile' item.user.username %}">{{ item.user }}</a></b></div>
+                        </div>
+                    </div>                    
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
-    <div>
-        <h3>Name:&nbsp;{{ profile.first_name }}&nbsp;{{ profile.last_name }}</h3>
-    </div>
-    <br>
-    <div>
-        <form action="{% url 'profile' profile.username %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="view" value="listings">
-            <input type="submit" value="Show listings">
-        </form>
-        <form action="{% url 'profile' profile.username %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="view" value="auctions">
-            <input type="submit" value="Show Auctions">
-        </form>
-    </div>
-    {% if view %}
-        {% for item in view %}
-            <div>{{ item.title }}</div>
-        {% endfor %}
-    {% endif %}
 {% endblock %}
