@@ -118,7 +118,7 @@ def add(request):
         #Display the form to let the user add a listing
         return render(request, "auctions/add.html")
 
-#To be checked. Optimizations possible.
+#Displays the listing requested by the client
 @login_required(redirect_field_name=None, login_url="/login")
 def listing(request, listing_id):
     #Get the details of the listing from the db.
