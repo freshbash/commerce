@@ -32,7 +32,7 @@ class Listing(models.Model):
         choices=CATEGORY_CHOICES,
         default="Not Provided"
     )
-    highest_bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bids", null=True)
+    highest_bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bids", blank=True, null=True)
 
     def __str__(self):
         return f"User: {self.user}, Product: {self.title}, Current Price: {self.current_price}, Highest Bidder: {self.highest_bidder}"

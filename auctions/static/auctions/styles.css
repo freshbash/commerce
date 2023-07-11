@@ -24,13 +24,6 @@ ul.navbar-nav {
     display: flex;
 }
 
-.dropdown-menu {
-    position: absolute;
-    right: 0;
-    left: auto;
-    transform: translateX(-35%);
-}
-
 .root {
     display: flex;
     flex-direction: column;
@@ -39,7 +32,8 @@ ul.navbar-nav {
 }
 
 .active-listings{
-    display: grid;    
+    display: grid;
+    grid-auto-rows: minmax(250px, 300px);
     width: 90%;
 }
 
@@ -169,7 +163,7 @@ ul.cats{
 
 @media screen and (min-width: 1000px) {
     .active-listings {
-        grid-auto-rows: minmax(20%, auto);
+        grid-auto-rows: minmax(250px, 300px);
         grid-template-columns: 1fr 1fr 1fr;
     }
     .tile {
@@ -195,7 +189,7 @@ ul.cats{
 
 @media screen and (min-width: 600px)and (max-width: 999px) {
     .active-listings {
-        grid-auto-rows: minmax(10%, auto);
+        grid-auto-rows: minmax(250px, 300px);
         grid-template-columns: 1fr 1fr;
     }
     .tile {
