@@ -20,7 +20,7 @@ class Listing(models.Model):
     status = models.CharField(max_length=8, choices=state, default="A")
     CATEGORY_CHOICES = [
         ("ANTIQUES", "Antiques"),
-        ("AUTOMOBILES", "Automobiles"),
+        ("AUTOMOTIVE", "Automotive"),
         ("BOOKS", "Books/Textbooks",), 
         ("ELECTRONICS", "Electronics",), 
         ('FASHION', "Fashion",), 
