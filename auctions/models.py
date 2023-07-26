@@ -15,7 +15,7 @@ class Listing(models.Model):
     description = models.CharField(max_length=1000)
     starting_bid = models.IntegerField()
     current_price = models.IntegerField(default = starting_bid)
-    image_url = models.URLField(default="No image provided")
+    image_url = models.URLField(default="No image provided", max_length=200)
     state = [("A", "Active"), ("D", "Deactive")]
     status = models.CharField(max_length=8, choices=state, default="A")
     CATEGORY_CHOICES = [
