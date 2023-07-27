@@ -81,11 +81,11 @@ WSGI_APPLICATION = 'commerce.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ["NAME"],#commercedb
-        'USER': os.environ["USER_NAME"],#commerce_admin
-        'PASSWORD': os.environ["PASSWORD"],#bhashwar22
-        'HOST': os.environ["HOST"],#localhost
-        'PORT': os.environ["PORT"],#5432
+        'NAME': os.environ.get("NAME"),
+        'USER': os.environ.get("USER_NAME"),
+        'PASSWORD': os.environ.get("PASSWORD"),
+        'HOST': os.environ.get("HOST"),
+        'PORT': os.environ.get("PORT"),
     }
 }
 
